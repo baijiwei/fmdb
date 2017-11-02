@@ -1,7 +1,7 @@
 all: fmdb client
 
 fmdb: server.c httpd.c
-	gcc -W -Wall -lpthread -o fmdb server.c httpd.c
+	gcc -W -Wall -lpthread -o fmdb server.c httpd.c buffer.h buffer.c fmdb.h fmdb.c
 
 client: client.c
 	gcc -W -Wall -lpthread -o client client.c
