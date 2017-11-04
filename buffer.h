@@ -1,7 +1,8 @@
 #ifndef BUFFER_H
 #define BUFFER_H
 
-#include<stdio.h>
+#include "sys.h"
+
 struct Buffer_t {
 	short    fd_data;
 	size_t   max_size;

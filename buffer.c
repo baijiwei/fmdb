@@ -7,7 +7,7 @@ size_t SpaceAvailable(Buffer_t* buf)
 
 int WriteBytesToBuffer(Buffer_t* buf, char* source, size_t len)
 {
-	if (SpaceAvailable(len) < len) {
+	if (SpaceAvailable(buf) < len) {
 		write(buf->fd_data, buf->head, buf->cursor - buf->head);
 		buf->cursor = buf->head;
 	}
