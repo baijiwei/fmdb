@@ -3,6 +3,7 @@
 
 int main(int argc, char** argv)
 {
-	handleHttp();
+	//handleHttp();
+	HandleInputCommand();
 	return 0;
 }
