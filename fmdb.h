@@ -8,8 +8,12 @@
 
 #define DFT_BUF_SIZE 1024
 struct FmdbObj_t {
-	short        fd_data;
-	short        fd_log;
+	FILE*        fd_data;
+	FILE*        fd_log;
+	FILE*        fd_oplog;
+	char*        data_file_full_path;
+	char*       oplog_file_full_path;
+	char*        log_file_full_path;
 	Buffer_t*    write_buf;
 
 };

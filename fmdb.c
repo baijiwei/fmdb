@@ -31,14 +31,51 @@ FmdbObj_t* ConstructFmDB()
 		fprintf(stderr, "Memory has been exhausted\n");
 		return NULL;
 	}
+
+
+	obj->fd_data = fopen(obj->data_file_full_path, "w+");
+	if (NULL == obj->fd_data) {
+		fprintf(stderr, "Failed to open data file");
+		DestructFmdb(obj);
+		return NULL;
+	}
+	obj->fd_oplog = fopen(obj->oplog_file_full_path, "w+");
+	if (NULL == obj->fd_oplog) {
+		fprintf(stderr, "Failed to open oplog file");
+		DestructFmdb(obj);
+		return NULL;
+	}
+	obj->fd_log = fopen(obj->log_file_full_path, "w+");
+	if (NULL == obj->fd_log) {
+		fprintf(stderr, "Failed to open log file");
+		DestructFmdb(obj);
+		return NULL;
+	}
 	AllocBuffer(obj, DFT_BUF_SIZE);
 
 	return obj;
 }
 
+void DestructFmdb(Fmdb_t* obj)
+{
+	if (NULL != obj->fd_data) {
+		fclose(obj->fd_data);
+    }
+	if (NULL != obj->fd_oplog) {
+		fclose(obj->fd_oplog);
+    }
+	if (NULL != obj->fd_log) {
+		fclose(obj->fd_log);
+    }
+
+    free(obj);
+	obj = NULL;
+}
+
 Result InsertOneValue(char* key, char* val) 
 {
 	printf("begin to handle insert key\n");
+
      return RESULT_OK;
 }
 
