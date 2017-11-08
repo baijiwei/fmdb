@@ -8,6 +8,7 @@ enum Result {
 };
 typedef enum Result Result;
 
+static FmdbObj_t* obj = NULL;
 static void AllocBuffer(FmdbObj_t *obj, size_t len)
 {
 	if (NULL == obj || len == 0) {
@@ -56,7 +57,7 @@ FmdbObj_t* ConstructFmDB()
 	return obj;
 }
 
-void DestructFmdb(Fmdb_t* obj)
+void DestructFmdb(FmdbObj_t* obj)
 {
 	if (NULL != obj->fd_data) {
 		fclose(obj->fd_data);
@@ -72,9 +73,35 @@ void DestructFmdb(Fmdb_t* obj)
 	obj = NULL;
 }
 
+void AppendOplog(char type, char* key, char* val)
+{
+	switch (type) {
+		case 'I':
+		    fprintf(obj->fd_oplog, "I,%s,%s", key, val) ;
+			break;
+		case 'D':
+			assert(NULL == val);
+		    fprintf(obj->fd_oplog, "D,%s", key) ;
+			break;
+		case 'F':
+			assert(NULL == val);
+		    fprintf(obj->fd_oplog, "F,%s", key) ;
+			break;
+		case 'U':
+		    fprintf(obj->fd_oplog, "U,%s,%s", key, val) ;
+			break;
+		default:
+		    fprintf(obj->fd_log, "Invalid oplog type %c", type);
+			break;
+	}
+
+}
+
 Result InsertOneValue(char* key, char* val) 
 {
 	printf("begin to handle insert key\n");
+
+	AppendOplog('I', key, val);
 
      return RESULT_OK;
 }
@@ -82,24 +109,27 @@ Result InsertOneValue(char* key, char* val)
 Result DeleteOneValue(char* key)
 {
 	printf("begin to handle delete key\n");
+	AppendOplog('D', key, NULL);
 	return RESULT_OK;
 }
 
 Result FindOneValue(char* key)
 {
 	printf("begin to handle find key\n");
+	AppendOplog('F', key, NULL);
 	return RESULT_OK;
 }
 
 Result UpdateOneValue(char* key, char* val)
 {
 	printf("begin to handle update key\n");
+	AppendOplog('U', key, val);
 	return RESULT_OK;
 }
 
 void HandleInputCommand()
 {
-	FmdbObj_t* obj = ConstructFmDB();
+	obj = ConstructFmDB();
 	if (NULL == obj) {
 		fprintf(stderr, "Failed to create FmdbObj_t object");
 		return;
