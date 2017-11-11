@@ -7,7 +7,28 @@
 #include "buffer.h"
 
 #define DFT_BUF_SIZE 1024
-struct FmdbObj_t {
+
+enum Result {
+	RESULT_OK          = 0,
+	RESULT_FAIL        = 1,
+	RESULT_DEPLICATED  = 2,
+	RESULT_NO_FOUND    = 3,
+};
+typedef enum Result Result;
+
+class FmdbObj {
+public:
+    FmdbObj();
+	~FmdbObj();
+	void     AppendOplog(char type, char* key, char* val);
+	void     HandleInputCommand();
+	Result   InsertOneValue(char* key, char* val);
+	Result   UpdateOneValue(char* key, char* val);
+	Result   FindOneValue(char* key);
+	Result   DeleteOneValue(char* key);
+
+private:
+    void   ConstructFmDB();
 	FILE*        fd_data;
 	FILE*        fd_log;
 	FILE*        fd_oplog;
@@ -17,6 +38,5 @@ struct FmdbObj_t {
 	Buffer_t*    write_buf;
 
 };
-typedef struct FmdbObj_t FmdbObj_t;
 
 #endif

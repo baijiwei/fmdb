@@ -6,4 +6,7 @@
 #include<string.h>
 #include <pthread.h>
 #include<assert.h>
+
+#define uint_T unsigned int
+#define byte_T unsigned char
 #endif

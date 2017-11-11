@@ -3,14 +3,17 @@
 
 #include "sys.h"
 
-struct Buffer_t {
-	short    fd_data;
+class Buffer_t {
+public:
+    Buffer_t(FILE* fd_data, size_t len);
+	~Buffer_t();
+	int    WriteBytesToBuffer(char* source, size_t len);
+	size_t SpaceAvailable();
+private:
+	FILE*    fd_data;
 	size_t   max_size;
-	char*    cursor;
 	char*    head;
+	char*    cursor;
 };
-typedef struct Buffer_t Buffer_t;
 
-size_t SpaceAvailable(Buffer_t* buf);
-int WriteBytesToBuffer(Buffer_t* buf, char* source, size_t len);
 #endif
