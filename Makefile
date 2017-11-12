@@ -1,6 +1,6 @@
 all: fmdb client
 
-SOURCE_FILE = server.cpp httpd.cpp buffer.h buffer.cpp fmdb.h fmdb.cpp
+SOURCE_FILE = server.cpp httpd.cpp buffer.h buffer.cpp fmdb.h fmdb.cpp btree.h btree.cpp
 
 fmdb: server.cpp httpd.cpp
 	rm -f fmdb
