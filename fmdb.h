@@ -5,9 +5,13 @@
 #include<string.h>
 #include<stdlib.h>
 #include "buffer.h"
+#include "ffShr.h"
+#include<string>
+#include<vector>
 
 #define DFT_BUF_SIZE 1024
 
+using  std::string;
 enum Result {
 	RESULT_OK          = 0,
 	RESULT_FAIL        = 1,
@@ -15,6 +19,45 @@ enum Result {
 	RESULT_NO_FOUND    = 3,
 };
 typedef enum Result Result;
+
+struct kvValue {
+	string   key;
+	string   val;
+};
+typedef struct kvValue kvValue;
+
+struct fmdbBlkLayout {
+	off_t   offset;
+	uint_T  len;
+};
+
+class ffwSession {
+public:
+    ffwSession();
+	~ffwSession();
+private:
+    std::vector<kvValue*> kv_arr;
+	uint_T  curr_size;
+};
+
+class ffwDataBlk {
+public:
+    ffwDataBlk();
+	~ffwDataBlk();
+private:
+	fmdbBlkLayout* layout;
+};
+
+class ffwChainBlk {
+public:
+	ffwChainBlk();
+	~ffwChainBlk();
+private:
+    fmdbXTag  begin_xtag;
+	fmdbXTag  close_xtag;
+	fmdbBlkLayout* data_layout_arr;
+};
+
 
 class FmdbObj {
 public:
