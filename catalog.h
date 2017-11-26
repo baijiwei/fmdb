@@ -15,7 +15,7 @@ public:
 		map<string, string>::iterator it=kv_map.find(key);
 		if (kv_map.end() != it) {
 		}
-		kv_map.insert(key, value);
+		kv_map.insert(std::pair<string, string>(key, value));
 	}
 
 	void DeleteOneKVValue(string key) {
@@ -28,13 +28,13 @@ public:
 	string FindKVValue(string key) {
 		map<string, string>::iterator it=kv_map.find(key);
 		if (kv_map.end() == it) {
-			return;
+			return "";
 		}
 		return it->second;
 	}
 
 
-	getHash() { return kv_map; }
+	map<string, string> getHash() { return kv_map; }
 private:
     string collName;
 	map<string, string> kv_map;
@@ -44,16 +44,19 @@ public:
 	fmdbDatabase(string name):dbName(name){}
 	~fmdbDatabase(){ collection_map.clear(); }
 
+	void AddOneCollection(string name, fmdbCollection* collection) {
+         collection_map.insert(std::pair<string, fmdbCollection*>(name, collection));
+	}
 	void AddOneCollection(string coll_name) {
          fmdbCollection* collection = new fmdbCollection(coll_name);
 		 if (NULL == collection) {
-			 printf("Memory has been exhausted.\n")
+			 printf("Memory has been exhausted.\n");
 			 return;
 		 }
-         collection_map.insert(coll_name, collection);
+         collection_map.insert(std::pair<string, fmdbCollection*>(coll_name, collection));
 	}
 	void DeleteOneCollection(string coll_name) {
-		map<string, string>::iterator it=collection_map.find(key);
+		map<string, fmdbCollection*>::iterator it=collection_map.find(coll_name);
 		if (collection_map.end() == it) {
 			return;
 		}
@@ -61,16 +64,16 @@ public:
 	}
 
 	fmdbCollection* findCollection(string coll_name) {
-		map<string, string>::iterator it=collection_map.find(coll_name);
+		map<string, fmdbCollection*>::iterator it=collection_map.find(coll_name);
 		if (collection_map.end() == it) {
-			return;
+			return NULL;
 		}
-		return it.second;
+		return it->second;
 	}
 
 
 
-	getHash() { return collection_map; }
+	map<string, fmdbCollection*> getCollectionMap() { return collection_map; }
 private:
     string dbName;
     map<string, fmdbCollection*>  collection_map;

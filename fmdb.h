@@ -8,10 +8,12 @@
 #include "ffShr.h"
 #include<string>
 #include<vector>
+#include "catalog.h"
 
 #define DFT_BUF_SIZE 1024
 
-using  std::string;
+using  namespace std;
+
 enum Result {
 	RESULT_OK          = 0,
 	RESULT_FAIL        = 1,
@@ -79,7 +81,7 @@ private:
 	char*       oplog_file_full_path;
 	char*        log_file_full_path;
 	Buffer_t*    write_buf;
-
+	std::map<string, fmdbDatabase*>  db_manager;
 };
 
 #endif
