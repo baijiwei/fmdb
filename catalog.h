@@ -9,14 +9,9 @@ using namespace std;
 
 class fmdbCollection {
 public:
-	fmdbCollection(string name):collName(name){}
+	fmdbCollection(string name):collName(name), curr_str_size(0){}
 	~fmdbCollection() { kv_map.clear(); }
-	void AddOneKVValue(string key, string value) {
-		map<string, string>::iterator it=kv_map.find(key);
-		if (kv_map.end() != it) {
-		}
-		kv_map.insert(std::pair<string, string>(key, value));
-	}
+	void AddOneKVValue(string key, string value); 
 
 	void DeleteOneKVValue(string key) {
 		map<string, string>::iterator it=kv_map.find(key);
@@ -35,9 +30,13 @@ public:
 
 
 	map<string, string> getHash() { return kv_map; }
+    void FlushKVString();
 private:
+	const uint_T total_str_size = 32*1024*1024; 
+
     string collName;
 	map<string, string> kv_map;
+	uint_T curr_str_size;
 };
 class fmdbDatabase {
 public:
